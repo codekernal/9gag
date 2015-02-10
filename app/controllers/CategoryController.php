@@ -14,7 +14,18 @@ class CategoryController extends BaseController{
 	public function addCategory()
 	{
 		$name    	= Input::get('name');
-		$resp 		= $this->repo->insertCategory($name);
+		$validator  = Validator::make(
+					    array('name' => $name),
+					    array('name' => 'required')
+					);
+		if($validator->fails())
+		{
+			return false;
+		}
+		else
+		{
+			$resp 	= $this->repo->insertCategory($name);
+		}
 
 	}
 
@@ -43,7 +54,18 @@ class CategoryController extends BaseController{
 	public function dltCategory()
 	{
 		$id		 	= Input::get('id');
-		$resp 		= $this->repo->delCategory($id);
+		$validator  = Validator::make(
+					    array('id' => $id),
+					    array('id' => 'required')
+					);
+		if($validator->fails())
+		{
+			return false;
+		}
+		else
+		{
+			$resp 		= $this->repo->delCategory($id);
+		}
 	}
 
 	/*
@@ -53,7 +75,20 @@ class CategoryController extends BaseController{
 	{
 		$id 		= Input::get('id');
 		$name 		= Input::get('name');
-		$resp 		= $this->repo->updateCategory($id,$name);
+		$validator  = Validator::make(
+					    array('id'   => $id,
+					    	  'name' => $name,),
+					    array('id'   => 'required',
+					    	  'name' => 'required')
+					);
+		if($validator->fails())
+		{
+			return false;
+		}
+		else
+		{
+			$resp	= $this->repo->updateCategory($id,$name);
+		}
 	}
 	
 }
