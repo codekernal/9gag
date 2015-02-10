@@ -9,7 +9,7 @@ class CategoryController extends BaseController{
 
 
 	/*
-		add a category
+		Add A Category
 	*/
 	public function addCategory()
 	{
@@ -25,12 +25,26 @@ class CategoryController extends BaseController{
 		else
 		{
 			$resp 	= $this->repo->insertCategory($name);
+			if($resp)
+			  {
+				   $status = 200;
+				   $data   = $resp;
+			  }
+			  else
+			  {
+			       $status = 401;
+			       $data   = array('error'=>array('message'=>'hours status updated',
+			                   'type'=>'Unauthorized',
+			                   'code'=>401));
+			  }
+  
+        	return Response::json($data,$status);
 		}
 
 	}
 
 	/*
-		get category detail. if id is given returns a particular category details else return all categories
+		Get Category Detail. If id is given, returns a particular category details else return all categories
 	*/
 	public function getCategory()
 	{
@@ -38,18 +52,44 @@ class CategoryController extends BaseController{
 		if(!empty($id))
 		{
 			$resp 	= $this->repo->getCategory($id);
-			echo json_encode($resp);
+			if($resp)
+			  {
+				   $status = 200;
+				   $data   = $resp;
+			  }
+			  else
+			  {
+			       $status = 401;
+			       $data   = array('error'=>array('message'=>'hours status updated',
+			                   'type'=>'Unauthorized',
+			                   'code'=>401));
+			  }
+  
+        		return Response::json($data,$status);
 		}
 		else
 		{
 			$resp 	= $this->repo->getCategories();
-			echo json_encode($resp);
+			if($resp)
+			  {
+				   $status = 200;
+				   $data   = $resp;
+			  }
+			  else
+			  {
+			       $status = 401;
+			       $data   = array('error'=>array('message'=>'hours status updated',
+			                   'type'=>'Unauthorized',
+			                   'code'=>401));
+			  }
+  
+        		return Response::json($data,$status);
 		}
 
 	}
 
 	/*
-		delete a category
+		Delete A Category
 	*/
 	public function dltCategory()
 	{
@@ -64,12 +104,26 @@ class CategoryController extends BaseController{
 		}
 		else
 		{
-			$resp 		= $this->repo->delCategory($id);
+			$resp 	= $this->repo->delCategory($id);
+			if($resp)
+			  {
+				   $status = 200;
+				   $data   = $resp;
+			  }
+			  else
+			  {
+			       $status = 401;
+			       $data   = array('error'=>array('message'=>'hours status updated',
+			                   'type'=>'Unauthorized',
+			                   'code'=>401));
+			  }
+  
+        		return Response::json($data,$status);
 		}
 	}
 
 	/*
-		update category
+		Update Category
 	*/
 	public function editCategory()
 	{
@@ -88,6 +142,20 @@ class CategoryController extends BaseController{
 		else
 		{
 			$resp	= $this->repo->updateCategory($id,$name);
+			if($resp)
+			  {
+				   $status = 200;
+				   $data   = $resp;
+			  }
+			  else
+			  {
+			       $status = 401;
+			       $data   = array('error'=>array('message'=>'hours status updated',
+			                   'type'=>'Unauthorized',
+			                   'code'=>401));
+			  }
+  
+        		return Response::json($data,$status);
 		}
 	}
 	

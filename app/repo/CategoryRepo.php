@@ -5,7 +5,7 @@ class CategoryRepo
 		
 
 	/*
-		get all categories
+		Get All Categories
 	*/
 	public function getCategories()
 	{
@@ -20,7 +20,7 @@ class CategoryRepo
 	}
 
 	/*
-		delete a category
+		Delete A Category
 	*/
 	public function delCategory($id)
 	{
@@ -29,6 +29,7 @@ class CategoryRepo
 		if(!empty($rec))
 		{
 			$rec->delete();
+			$video = Video::where('category_id','=',$id)->update('category_id','=','0');
 			return true;
 		}
 		else
@@ -36,7 +37,7 @@ class CategoryRepo
 	}
 
 	/*
-		get a single category
+		Get A Single Category
 	*/
 	public function getCategory($id)
 	{
@@ -52,7 +53,7 @@ class CategoryRepo
 	}
 
 	/*
-		update a categorypublic function updateCategory($id,$name)
+		Update A Category
 	*/
 	public function updateCategory($id,$name)
  	{
@@ -70,7 +71,7 @@ class CategoryRepo
  	}
 
 	/*
-		add a category	
+		Add A Category	
 	*/
 	public function insertCategory($name)
  	{

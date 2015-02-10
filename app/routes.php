@@ -151,10 +151,19 @@ Route::get('trend/get','TrendController@getTrend');
 Route::get('trend/edit','TrendController@editTrend');
 Route::get('trend/dlt','TrendController@dltTrend');
 
-//category routes
-Route::get('api/category/add','CategoryController@addCategory');
-Route::get('api/category/get','CategoryController@getCategory');
-Route::get('api/category/edit','CategoryController@editCategory');
-Route::get('api/category/dlt','CategoryController@dltCategory');
+/*
+	New Routes
+*/
 
+//category routes
+Route::post('api/category/add','CategoryController@addCategory');
+Route::get('api/category/get','CategoryController@getCategory');
+Route::put('api/category/edit','CategoryController@editCategory');
+Route::delete('api/category/dlt','CategoryController@dltCategory');
+
+//video routes
+Route::post('api/video/add','VideoController@addVideo');
+Route::get('api/video/get','VideoController@getVideo');
+Route::put('api/video/edit','VideoController@editVideo');
+Route::delete('api/video/dlt','VideoController@dltVideo');
 
