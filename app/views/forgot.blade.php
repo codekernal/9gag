@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Planner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="{{URL::to('bs3/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{URL::to('css/style-responsive.css')}}" rel="stylesheet">
+<link href="{{URL::to('css/atom-style.css')}}" rel="stylesheet">
+<link href="{{URL::to('css/font-awesome.min.css')}}" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="{{URL::to('js/modules/common.js')}}"></script> 
+
+<script src="{{URL::to('js/jquery-1.10.2.js')}}"></script> 
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="{{URL::to('bs3/js/bootstrap.min.js')}}"></script>
+<script src="{{URL::to('js/modules/auth.js')}}"></script> 
+
+<script>
+var MATCH_ERROR = "<?php echo Lang::get('auth.MATCH_ERROR'); ?>";
+var PASSWORD_ERROR = "<?php echo Lang::get('auth.PASSWORD_ERROR'); ?>";
+var PASSWORD_SUCCESS = "<?php echo Lang::get('auth.PASSWORD_SUCCESS'); ?>";
+var LOGIN_HERE = "<?php echo Lang::get('auth.LOGIN_HERE'); ?>";
+
+
+</script>
+</head>
+<body>
+
+<div class="container login-bg">
+
+<form class="login-form-signin">
+  <div class="login-logo"><img src="{{URL::to('images/logo.png')}}"></div>
+    <h2 class="login-form-signin-heading"><?php echo Lang::get('auth.UPDATE_PASSWORD'); ?>
+    </h2>
+        <div class="login-wrap">
+        <div class="notification-bar" id="msg"></div>
+        <?php
+        if($status)
+        {
+          ?>
+            <input type="password" autofocus placeholder="<?php echo Lang::get('auth.PASSWORD'); ?>" id="password" class="form-control">
+
+            <input type="password" id="confirm_password" placeholder="<?php echo Lang::get('auth.CONFIRM_PASSWORD'); ?>" class="form-control">
+            <input type="hidden" id="verify_code" value="{{$code}}" class="form-control">
+            <a  href="javascript:void(0)" onclick="updatePassword();" class="btn btn-lg btn-primary btn-block"><?php echo Lang::get('auth.UPDATE_PASSWORD'); ?></a>
+
+
+          <?php
+        }
+        else
+        {          
+
+         echo Lang::get('auth.FORGOT_VERIFY_ERROR');  
+          
+      }
+      ?>
+        </div>
+
+
+
+      </form>
+
+    </div>
+
+
+
+</body>
+</html>
