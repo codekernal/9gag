@@ -4,7 +4,9 @@ class CategoryRepo
 {	
 		
 
-//get all categories
+	/*
+		get all categories
+	*/
 	public function getCategories()
 	{
 		$rs = Category::get();
@@ -17,7 +19,9 @@ class CategoryRepo
 		
 	}
 
-//delete a category
+	/*
+		delete a category
+	*/
 	public function delCategory($id)
 	{
 		$rec = Category::where('id','=',$id)->first();
@@ -31,7 +35,9 @@ class CategoryRepo
 			return false;
 	}
 
-//get a single category
+	/*
+		get a single category
+	*/
 	public function getCategory($id)
 	{
 		$rs = Category::find($id);
@@ -45,35 +51,40 @@ class CategoryRepo
 		}
 	}
 
-//update a category
+	/*
+		update a categorypublic function updateCategory($id,$name)
+	*/
 	public function updateCategory($id,$name)
-	{
-		$count = Category::where('id','=',$id)->count();
-		if($count == 0)
-		{
-			return false;
-		}
-		else
-		{
-			$update = Category::where('id', $id)->update(array('name' => $name));
-            return true;
-		}
-	}
+ 	{
+  		$cat = Category::find($id);
+ 		if(!empty($cat))
+  		{
+   			$cat->name = $name;
+   			$cat->update();
+   			return true;
+  		}
+  		else
+  		{
+   			return false;
+  		}
+ 	}
 
-//add a category	
+	/*
+		add a category	
+	*/
 	public function insertCategory($name)
-	{
-		$insert = Category::insert(array('name'=>$name));
-		if($insert)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
+ 	{
+ 		$cat = new Category;
+  		$cat->name = $name;
+  		if($cat->save())
+  		{
+   			return true;
+  		}
+  		else
+  		{
+   			return false;
+  		}
+ 	}
 	
 }
 
