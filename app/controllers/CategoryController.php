@@ -5,6 +5,7 @@ class CategoryController extends BaseController{
 	private $repo;
     public function __construct(CategoryRepo $categoryRepo){
     	$this->repo = $categoryRepo;
+    }
 
 
 	/*
