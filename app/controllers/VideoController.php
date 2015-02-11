@@ -186,6 +186,80 @@ class VideoController extends BaseController{
         		return Response::json($data,$status);
 		}
 	}
+
+	/*
+		Video View Count	
+	*/
+	public function view_count()
+	{
+		$id 		= Input::get('id');
+		if(!empty($id))
+		{
+			$resp 	= $this->repo->view_count($id);
+			return Response::json($resp);
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
+	/*
+		Video Share Count	
+	*/
+	public function share_count()
+	{
+		$id 		= Input::get('id');
+		if(!empty($id))
+		{
+			$resp 	= $this->repo->share_count($id);
+			return Response::json($resp);
+			
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
+	/*
+		Video Vote up/Vote down 	
+	*/
+	public function vote()
+	{
+		$id 		= Input::get('id');
+		$user_id    = Input::get('user_id');
+		$action     = Input::get('action');
+		if($action == 'vote_up')
+		{
+			if(!empty($id))
+			{
+				$resp 	= $this->repo->vote_up($id,$user_id,$action);
+				return Response::json($resp);
+				
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if($action == 'vote_down')
+		{
+			if(!empty($id))
+			{
+				$resp 	= $this->repo->vote_down($id,$user_id,$action);
+				return Response::json($resp);
+				
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
 	
 }
 

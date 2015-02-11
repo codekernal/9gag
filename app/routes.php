@@ -167,3 +167,11 @@ Route::get('api/video/get','VideoController@getVideo');
 Route::put('api/video/edit','VideoController@editVideo');
 Route::delete('api/video/dlt','VideoController@dltVideo');
 
+//view count
+Route::get('api/video/view','VideoController@view_count');
+
+//share count
+Route::get('api/video/share','VideoController@share_count');
+
+//vote_up/vote_down
+Route::get('api/video/vote','VideoController@vote');

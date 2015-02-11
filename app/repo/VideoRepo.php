@@ -91,7 +91,7 @@ class VideoRepo
   		$video->category_id = $category_id;
   		$video->user_id     = $user_id;
    		$video->date        = $date;
-   		$video->status       = $status;
+   		$video->status      = $status;
 
   		if($video->save())
   		{
@@ -102,7 +102,118 @@ class VideoRepo
    			return false;
   		}
  	}
+
+ 	public function view_count($id)
+ 	{
+ 		$video = Video::where('id','=',$id)->first();
+ 		if(!empty($video))
+ 		{
+ 			$video->view = $video->view+1;
+ 			$video->save();
+ 			return $video->view;
+ 		}
+ 		else
+ 		{
+ 			return false;
+ 		}
+
+ 	}
 	
+	public function share_count($id)
+ 	{
+ 		$video = Video::where('id','=',$id)->first();
+ 		if(!empty($video))
+ 		{
+ 			$video->share = $video->share+1;
+ 			$video->save();
+ 			return $video->share;
+ 		}
+ 		else
+ 		{
+ 			return false;
+ 		}
+
+ 	}
+
+ 	public function vote_up($id)
+ 	{
+ 		$video = Video::where('id','=',$id)->first();
+ 		if(!empty($video))
+ 		{
+ 			$log = log($id,$user_id,$action);
+ 			if($log)
+ 			{
+ 				$video->like = $video->like+1;
+ 				$video->save();
+
+ 				$log->user_id  = $user_id;
+ 				$log->video_id = $video_id;
+ 				$log->action   = $action;
+ 				$log->save();
+
+ 				return $video->like;
+ 			}
+ 			else
+ 			{
+ 				return false;
+ 			}
+ 		}
+ 		else
+ 		{
+ 			return false;
+ 		}
+
+ 	}
+
+ 	public function vote_down($id)
+ 	{
+ 		$video = Video::where('id','=',$id)->first();
+ 		if(!empty($video))
+ 		{
+ 			if($video->like == 0 || $video->like == null)
+ 			{
+ 				return false;
+ 			}
+ 			else
+ 			{
+ 				$log = log($id,$user_id,$action);
+ 				if($log)
+ 				{
+		 			$video->dislike = $video->dislike+1;
+		 			$video->save();
+
+		 			$log->user_id  = $user_id;
+	 				$log->video_id = $video_id;
+	 				$log->action   = $action;
+	 				$log->save();
+
+		 			return $video->dislike;
+	 			}
+	 			else
+	 			{
+	 				return false;
+	 			}
+ 			}
+ 		}
+ 		else
+ 		{
+ 			return false;
+ 		}
+
+ 	}
+
+ 	public function log($user_id,$video_id,$action)
+ 	{
+ 		$count = "Select count(id) from log where user_id=$user_id and video_id=$video_id and action=$action";
+ 		if($count > 1)
+ 		{
+ 			return false;
+ 		}
+ 		else
+ 		{
+ 			return true;
+ 		}
+ 	}
 }
 
 ?>
