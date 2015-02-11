@@ -29,7 +29,7 @@ class CategoryRepo
 		if(!empty($rec))
 		{
 			$rec->delete();
-			$video = Video::where('category_id','=',$id)->update('category_id','=','0');
+			$video = Video::where('category_id', $id)->update(array('category_id' => 0));
 			return true;
 		}
 		else

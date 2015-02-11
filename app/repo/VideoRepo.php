@@ -10,6 +10,7 @@ class VideoRepo
 	public function getVideos()
 	{
 		$rs = Video::get();
+		$rs = Video::paginate(2);
 
 		if(!empty($rs))
 		{
@@ -81,7 +82,7 @@ class VideoRepo
 	/*
 		Update A Video
 	*/
-	public function updateVideo($id,$title,$link,$description,$category_id,$user_id,$date,$status)
+	public function updateVideo($id,$title,$link,$description,$category_id,$user_id,$date_created,$status)
  	{
   		$video = Video::find($id);
  		if(!empty($video))
@@ -91,7 +92,7 @@ class VideoRepo
    			$video->description  = $description;
    			$video->category_id  = $category_id;
    			$video->user_id      = $user_id;
-   			$video->date         = $date;
+   			$video->date_created = $date_created;
    			$video->status       = $status;
    			$video->update();
    			return true;
@@ -105,7 +106,7 @@ class VideoRepo
 	/*
 		Add a Video	
 	*/
-	public function insertVideo($title,$link,$description,$category_id,$user_id,$date,$status)
+	public function insertVideo($title,$link,$description,$category_id,$user_id,$date_created,$status)
  	{
  		$video 				= new Video;
   		$video->title 		= $title;
@@ -113,7 +114,7 @@ class VideoRepo
   		$video->description = $description;
   		$video->category_id = $category_id;
   		$video->user_id     = $user_id;
-   		$video->date        = $date;
+   		$video->date_created= $date_created;
    		$video->status      = $status;
 
   		if($video->save())
@@ -166,7 +167,7 @@ class VideoRepo
 
  	public function videoLog($video_id,$user_id,$action)
  	{
- 		$count = "Select count(id) from log where user_id=$user_id and video_id=$video_id and action=$action";
+ 		$count = ActivityLog::where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('action','=',$action)->count('id');
  		if($count > 1)
  		{
  			return false;
@@ -185,16 +186,17 @@ class VideoRepo
  		$video = Video::where('id','=',$video_id)->first();
  		if(!empty($video))
  		{
- 			$log = videoLog($video_id,$user_id,$action);
- 			if($log)
+ 			$log = $this->videoLog($video_id,$user_id,$action);
+ 			if($log == true)
  			{
- 				$video->like = $video->like+1;
- 				$video->save();
-
+ 				$log = new ActivityLog;
  				$log->user_id  = $user_id;
  				$log->video_id = $video_id;
  				$log->action   = $action;
  				$log->save();
+
+ 				$video->like = $video->like+1;
+ 				$video->save();
 
  				return $video->like;
  			}

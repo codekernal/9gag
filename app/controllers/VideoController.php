@@ -18,7 +18,7 @@ class VideoController extends BaseController{
 		$description    = Input::get('description');
 		$category_id    = Input::get('category_id');
 		$user_id        = Input::get('user_id');
-		$date           = date("Y-m-d H:i:s");
+		$date_created   = date("Y-m-d h:i:s");
 		$status         = Input::get('status');
 
 		$validator  = Validator::make(
@@ -38,7 +38,7 @@ class VideoController extends BaseController{
 		}
 		else
 		{
-			$resp 	= $this->repo->insertVideo($title,$link,$description,$category_id,$user_id,$date,$status);
+			$resp 	= $this->repo->insertVideo($title,$link,$description,$category_id,$user_id,$date_created,$status);
 			if($resp)
 			  {
 				   $status = 200;
@@ -168,7 +168,7 @@ class VideoController extends BaseController{
 		$description 	= Input::get('description');
 		$category_id 	= Input::get('category_id');
 		$user_id        = Input::get('user_id');
-		$date           = date("Y-m-d H:i:s");
+		$date_created   = date("Y-m-d h:i:s");
 		$status         = Input::get('status');
 
 		$validator  = Validator::make(
@@ -190,7 +190,7 @@ class VideoController extends BaseController{
 		}
 		else
 		{
-			$resp	= $this->repo->updateVideo($id,$title,$link,$description,$category_id,$user_id,$date,$status);
+			$resp	= $this->repo->updateVideo($id,$title,$link,$description,$category_id,$user_id,$date_created,$status);
 			if($resp)
 			  {
 				   $status = 200;
