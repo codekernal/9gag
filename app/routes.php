@@ -175,3 +175,4 @@ Route::get('api/video/share','VideoController@share_count');
 
 //vote_up/vote_down
 Route::get('api/video/vote','VideoController@vote');
+Route::get('api/video/log','VideoController@log');

@@ -58,11 +58,13 @@ class VideoController extends BaseController{
 	}
 
 	/*
-		Get Video Detail. If id is given, returns a particular video details else return all videos
+		Get Video Detail. If id is given, returns a particular video details.
+		If user id is given returns video details of a particular user else return all videos
 	*/
 	public function getVideo()
 	{
 		$id 		= Input::get('id');
+		$user_id 	= Input::get('user_id');
 		if(!empty($id))
 		{
 			$resp 	= $this->repo->getVideo($id);
@@ -80,6 +82,25 @@ class VideoController extends BaseController{
 			  }
   
         		return Response::json($data,$status);
+		}
+		else if(!empty($user_id))
+		{
+			$resp 	= $this->repo->getUserVideo($user_id);
+			if($resp)
+			  {
+				   $status = 200;
+				   $data   = $resp;
+			  }
+			  else
+			  {
+			       $status = 401;
+			       $data   = array('error'=>array('message'=>'hours status updated',
+			                   'type'=>'Unauthorized',
+			                   'code'=>401));
+			  }
+  
+        		return Response::json($data,$status);
+
 		}
 		else
 		{
@@ -229,14 +250,14 @@ class VideoController extends BaseController{
 	*/
 	public function vote()
 	{
-		$id 		= Input::get('id');
+		$video_id 	= Input::get('video_id');
 		$user_id    = Input::get('user_id');
 		$action     = Input::get('action');
 		if($action == 'vote_up')
 		{
-			if(!empty($id))
+			if(!empty($video_id) && !empty($user_id))
 			{
-				$resp 	= $this->repo->vote_up($id,$user_id,$action);
+				$resp 	= $this->repo->vote_up($video_id,$user_id,$action);
 				return Response::json($resp);
 				
 			}
@@ -247,9 +268,9 @@ class VideoController extends BaseController{
 		}
 		else if($action == 'vote_down')
 		{
-			if(!empty($id))
+			if(!empty($video_id) && !empty($user_id))
 			{
-				$resp 	= $this->repo->vote_down($id,$user_id,$action);
+				$resp 	= $this->repo->vote_down($video_id,$user_id,$action);
 				return Response::json($resp);
 				
 			}
@@ -260,7 +281,16 @@ class VideoController extends BaseController{
 		}
 	}
 
-	
+
+	public function log()
+	{
+		$id 		= Input::get('video_id');
+		$user_id 	= Input::get('user_id');
+		$action = Input::get('action');
+		
+			$resp 	= $this->repo->log($id,$user_id,$action);
+			return json_encode($resp);
+	}
 }
 
 ?>

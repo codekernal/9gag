@@ -36,6 +36,22 @@ class VideoRepo
 	}
 
 	/*
+		Get A User's Videos
+	*/
+	public function getUserVideo($user_id)
+	{
+		$rs = Video::where('user_id','=',$user_id)->get();
+		if(!empty($rs))
+		{
+			return $rs;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/*
 		Get A Single Video
 	*/
 	public function getVideo($id)
@@ -47,7 +63,14 @@ class VideoRepo
 			             'title'		=> $rs->title,
 			             'link' 		=> $rs->link,
 			             'description'  => $rs->description,
-			             'category_id'  =>$rs->category_id);
+			             'category_id'  => $rs->category_id,
+				         'user_id'      => $rs->user_id,
+				         'date'         => $rs->date,
+				         'status'       => $rs->status,
+				         'view'         => $rs->view,
+				         'share'        => $rs->share,
+				         'like'         => $rs->like,
+				         'dislike'      => $rs->dislike);
 		}
 		else
 		{
@@ -103,6 +126,9 @@ class VideoRepo
   		}
  	}
 
+ 	/*
+ 		View count of a Video
+ 	*/
  	public function view_count($id)
  	{
  		$video = Video::where('id','=',$id)->first();
@@ -119,6 +145,9 @@ class VideoRepo
 
  	}
 	
+	/*
+ 		Share count of a Video
+ 	*/
 	public function share_count($id)
  	{
  		$video = Video::where('id','=',$id)->first();
@@ -135,12 +164,28 @@ class VideoRepo
 
  	}
 
- 	public function vote_up($id)
+ 	public function videoLog($video_id,$user_id,$action)
  	{
- 		$video = Video::where('id','=',$id)->first();
+ 		$count = "Select count(id) from log where user_id=$user_id and video_id=$video_id and action=$action";
+ 		if($count > 1)
+ 		{
+ 			return false;
+ 		}
+ 		else
+ 		{
+ 			return true;
+ 		}
+ 	}
+
+ 	/*
+ 		Vote count(vote up/vote down) of a Video
+ 	*/
+ 	public function vote_up($video_id,$user_id,$action)
+ 	{
+ 		$video = Video::where('id','=',$video_id)->first();
  		if(!empty($video))
  		{
- 			$log = log($id,$user_id,$action);
+ 			$log = videoLog($video_id,$user_id,$action);
  			if($log)
  			{
  				$video->like = $video->like+1;
@@ -165,9 +210,9 @@ class VideoRepo
 
  	}
 
- 	public function vote_down($id)
+ 	public function vote_down($video_id,$user_id,$action)
  	{
- 		$video = Video::where('id','=',$id)->first();
+ 		$video = Video::where('id','=',$video_id)->first();
  		if(!empty($video))
  		{
  			if($video->like == 0 || $video->like == null)
@@ -176,7 +221,7 @@ class VideoRepo
  			}
  			else
  			{
- 				$log = log($id,$user_id,$action);
+ 				$log = videoLog($video_id,$user_id,$action);
  				if($log)
  				{
 		 			$video->dislike = $video->dislike+1;
@@ -202,18 +247,7 @@ class VideoRepo
 
  	}
 
- 	public function log($user_id,$video_id,$action)
- 	{
- 		$count = "Select count(id) from log where user_id=$user_id and video_id=$video_id and action=$action";
- 		if($count > 1)
- 		{
- 			return false;
- 		}
- 		else
- 		{
- 			return true;
- 		}
- 	}
+ 	
 }
 
 ?>
