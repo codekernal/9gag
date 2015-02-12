@@ -9,8 +9,10 @@ class VideoRepo
 	*/
 	public function getVideos()
 	{
+		$limit = 10;
+
 		$rs = Video::get();
-		$rs = Video::paginate(2);
+		$rs = Video::paginate($limit);
 
 		if(!empty($rs))
 		{
@@ -41,10 +43,11 @@ class VideoRepo
 	*/
 	public function getUserVideo($user_id)
 	{
+		
 		$rs = Video::where('user_id','=',$user_id)->get();
-		if(!empty($rs))
+		if(!empty($data))
 		{
-			return $rs;
+			return $data;
 		}
 		else
 		{
@@ -168,7 +171,7 @@ class VideoRepo
  	public function videoLog($video_id,$user_id,$action)
  	{
  		$count = ActivityLog::where('user_id','=',$user_id)->where('video_id','=',$video_id)->where('action','=',$action)->count('id');
- 		if($count > 1)
+ 		if($count > 0)
  		{
  			return false;
  		}
@@ -226,13 +229,14 @@ class VideoRepo
  				$log = videoLog($video_id,$user_id,$action);
  				if($log)
  				{
-		 			$video->dislike = $video->dislike+1;
-		 			$video->save();
-
+		 			$log = new ActivityLog;
 		 			$log->user_id  = $user_id;
 	 				$log->video_id = $video_id;
 	 				$log->action   = $action;
 	 				$log->save();
+
+	 				$video->dislike = $video->dislike+1;
+		 			$video->save();
 
 		 			return $video->dislike;
 	 			}
@@ -249,7 +253,12 @@ class VideoRepo
 
  	}
 
- 	
 }
 
 ?>
+
+
+
+
+
+ 
